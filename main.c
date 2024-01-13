@@ -50,6 +50,10 @@ int main(void) {
       down(arr);
     if (IsKeyDown(KEY_UP))
       up(arr);
+    if (IsKeyDown(KEY_RIGHT))
+      right(arr);
+    if (IsKeyDown(KEY_LEFT))
+      left(arr);
 
     BeginDrawing();
 
