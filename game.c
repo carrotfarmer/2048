@@ -21,3 +21,24 @@ void down(int grid[4][4]) {
     }
   }
 }
+
+void up(int grid[4][4]) {
+  for (int j = 0; j < 4; ++j) {
+    for (int i = 3; i > 0; --i) {
+      // upper cell is empty
+      if (grid[i - 1][j] == 0) {
+        int tmp = grid[i][j];
+        grid[i][j] = 0;
+        grid[i - 1][j] = tmp;
+      }
+      // upper cell has a tile
+      else {
+        // Merge
+        if (grid[i][j] == grid[i - 1][j]) {
+          grid[i - 1][j] += grid[i][j];
+          grid[i][j] = 0;
+        }
+      }
+    }
+  }
+}

@@ -35,8 +35,8 @@ void renderGrid(int grid[4][4]) {
 
 int main(void) {
   int arr[4][4] = {
-      {2, 0, 0, 0},
-      {2, 2, 0, 0},
+      {2, 0, 4, 0},
+      {2, 2, 4, 0},
       {0, 4, 0, 0},
       {0, 2, 0, 0},
   };
@@ -48,6 +48,8 @@ int main(void) {
   while (!WindowShouldClose()) {
     if (IsKeyDown(KEY_DOWN))
       down(arr);
+    if (IsKeyDown(KEY_UP))
+      up(arr);
 
     BeginDrawing();
 
