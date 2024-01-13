@@ -5,4 +5,4 @@ typedef struct {
   int y;
 } Point;
 
-Point center(int x, int y, int width, int height);
+Point findCenter(int x, int y, int width, int height);

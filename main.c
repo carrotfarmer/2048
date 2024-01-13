@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 
+#include "game.h"
 #include "utils.h"
 
 #define SCREEN_WIDTH 840
@@ -19,7 +20,7 @@ void renderGrid(int grid[4][4]) {
       char txt[32];
       DrawRectangleLines(currX, currY, BOX_WIDTH, BOX_HEIGHT, LIGHTGRAY);
       snprintf(txt, 32, "%d", grid[i][j]);
-      Point textCoords = center(currX, currY, BOX_WIDTH, BOX_HEIGHT);
+      Point textCoords = findCenter(currX, currY, BOX_WIDTH, BOX_HEIGHT);
       DrawText(txt, textCoords.x - 5, textCoords.y - 10, 30, GRAY);
       currX += BOX_WIDTH;
     }
@@ -34,10 +35,10 @@ void renderGrid(int grid[4][4]) {
 
 int main(void) {
   int arr[4][4] = {
-      {1, 2, 3, 4},
-      {5, 6, 7, 8},
-      {9, 10, 11, 12},
-      {13, 14, 15, 16},
+      {2, 0, 0, 0},
+      {2, 2, 0, 0},
+      {0, 4, 0, 0},
+      {0, 2, 0, 0},
   };
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "2048");
@@ -45,6 +46,9 @@ int main(void) {
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
+    if (IsKeyDown(KEY_DOWN))
+      down(arr);
+
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
