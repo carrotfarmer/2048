@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "raylib.h"
 
@@ -21,7 +22,8 @@ void renderGrid(int grid[4][4]) {
       DrawRectangleLines(currX, currY, BOX_WIDTH, BOX_HEIGHT, LIGHTGRAY);
       snprintf(txt, 32, "%d", grid[i][j]);
       Point textCoords = findCenter(currX, currY, BOX_WIDTH, BOX_HEIGHT);
-      DrawText(txt, textCoords.x - 5, textCoords.y - 10, 30, GRAY);
+      if (strcmp(txt, "0"))
+        DrawText(txt, textCoords.x - 10, textCoords.y - 20, 60, GRAY);
       currX += BOX_WIDTH;
     }
 
@@ -35,10 +37,10 @@ void renderGrid(int grid[4][4]) {
 
 int main(void) {
   int arr[4][4] = {
-      {2, 0, 4, 0},
-      {2, 2, 4, 0},
-      {0, 4, 0, 0},
-      {0, 2, 0, 0},
+      {0, 0, 4, 0},
+      {0, 0, 4, 4},
+      {0, 0, 4, 0},
+      {0, 0, 4, 0},
   };
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "2048");
@@ -46,14 +48,14 @@ int main(void) {
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
-    if (IsKeyDown(KEY_DOWN))
+    if (IsKeyPressed(KEY_DOWN))
       down(arr);
-    if (IsKeyDown(KEY_UP))
+    if (IsKeyPressed(KEY_UP))
       up(arr);
-    if (IsKeyDown(KEY_RIGHT))
-      right(arr);
-    if (IsKeyDown(KEY_LEFT))
+    if (IsKeyPressed(KEY_LEFT))
       left(arr);
+    if (IsKeyPressed(KEY_RIGHT))
+      right(arr);
 
     BeginDrawing();
 
