@@ -22,8 +22,15 @@ void renderGrid(int grid[4][4]) {
       DrawRectangleLines(currX, currY, BOX_WIDTH, BOX_HEIGHT, LIGHTGRAY);
       snprintf(txt, 32, "%d", grid[i][j]);
       Point textCoords = findCenter(currX, currY, BOX_WIDTH, BOX_HEIGHT);
-      if (strcmp(txt, "0"))
-        DrawText(txt, textCoords.x - 10, textCoords.y - 20, 60, GRAY);
+      if (strcmp(txt, "0")) {
+        if (grid[i][j] > 1000) {
+          DrawText(txt, textCoords.x - 60, textCoords.y - 20, 60, GRAY);
+        } else if (grid[i][j] > 100) {
+          DrawText(txt, textCoords.x - 40, textCoords.y - 20, 60, GRAY);
+        } else {
+          DrawText(txt, textCoords.x - 10, textCoords.y - 20, 60, GRAY);
+        }
+      }
       currX += BOX_WIDTH;
     }
 
@@ -38,7 +45,7 @@ void renderGrid(int grid[4][4]) {
 int main(void) {
   int arr[4][4] = {
       {0, 0, 4, 0},
-      {0, 0, 4, 4},
+      {0, 0, 1024, 4},
       {0, 0, 4, 0},
       {0, 0, 4, 0},
   };
