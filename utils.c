@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "utils.h"
 
@@ -34,20 +35,24 @@ void fillEmptySlots(Point slots[], int arr[4][4]) {
   }
 };
 
-int genRandom(int range) { return rand() % range; }
+int genRandom(int range) {
+  srand(time(NULL));
+  return rand() % range;
+}
 
-void copyGrid(int original[4][4], int new[4][4]) {
+void copyGrid(int original[4][4], int newArr[4][4]) {
   for (int i = 0; i < 4; ++i) {
     for (int j = 0; j < 4; ++j) {
-      new[i][j] = original[i][j];
+      newArr[i][j] = original[i][j];
     }
   }
 }
 
 int compareGrid(int a[4][4], int b[4][4]) {
-  int e;
-  // NOTE: deref a, since sizeof(a) returns size of pointer :skull:
-  e = memcmp(a, b, sizeof(*a));
-
-  return e;
+  int result = memcmp(a, b, 4 * 4 * sizeof(int));
+  if (result != 0) {
+    return 1;
+  } else {
+    return 0;
+  }
 }

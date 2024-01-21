@@ -27,6 +27,8 @@ void renderGrid(int grid[4][4]) {
           DrawText(txt, textCoords.x - 60, textCoords.y - 20, 60, GRAY);
         } else if (grid[i][j] > 100) {
           DrawText(txt, textCoords.x - 40, textCoords.y - 20, 60, GRAY);
+        } else if (grid[i][j] > 10) {
+          DrawText(txt, textCoords.x - 30, textCoords.y - 20, 60, GRAY);
         } else {
           DrawText(txt, textCoords.x - 10, textCoords.y - 20, 60, GRAY);
         }
@@ -43,12 +45,12 @@ void renderGrid(int grid[4][4]) {
 }
 
 int main(void) {
-  int arr[4][4] = {
-      {0, 0, 4, 0},
-      {0, 0, 1024, 4},
-      {0, 0, 4, 0},
-      {0, 0, 4, 0},
-  };
+  int arr[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+
+  int tileSpotX = genRandom(4);
+  int tileSpotY = genRandom(4);
+
+  arr[tileSpotX][tileSpotY] = 2;
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "2048");
 

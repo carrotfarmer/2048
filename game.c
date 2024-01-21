@@ -43,7 +43,7 @@ void down(int grid[4][4]) {
     }
   }
 
-  if (compareGrid(prevGrid, grid)) {
+  if (compareGrid(prevGrid, grid) == 1) {
     genTile(grid);
   }
 }
@@ -87,7 +87,7 @@ void up(int grid[4][4]) {
     }
   }
 
-  if (compareGrid(prevGrid, grid)) {
+  if (compareGrid(prevGrid, grid) == 1) {
     genTile(grid);
   }
 };
@@ -131,7 +131,7 @@ void right(int grid[4][4]) {
     }
   }
 
-  if (compareGrid(prevGrid, grid)) {
+  if (compareGrid(prevGrid, grid) == 1) {
     genTile(grid);
   }
 }
@@ -175,7 +175,7 @@ void left(int grid[4][4]) {
     }
   }
 
-  if (compareGrid(prevGrid, grid)) {
+  if (compareGrid(prevGrid, grid) == 1) {
     genTile(grid);
   }
 };
