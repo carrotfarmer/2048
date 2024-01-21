@@ -1,14 +1,21 @@
+#include <stdbool.h>
+#include <stdio.h>
+
 #include "game.h"
 #include "utils.h"
 
 void down(int grid[4][4]) {
+  int prevGrid[4][4];
+  copyGrid(grid, prevGrid);
+
   for (int col = 0; col < 4; ++col) {
     int curr = 3;
     for (int row = 3; row >= 0; --row) {
       if (grid[row][col] != 0) {
         grid[curr][col] = grid[row][col];
-        if (curr != row)
+        if (curr != row) {
           grid[row][col] = 0;
+        }
         --curr;
       }
     }
@@ -36,17 +43,23 @@ void down(int grid[4][4]) {
     }
   }
 
-  genTile(grid);
+  if (compareGrid(prevGrid, grid)) {
+    genTile(grid);
+  }
 }
 
 void up(int grid[4][4]) {
+  int prevGrid[4][4];
+  copyGrid(grid, prevGrid);
+
   for (int col = 0; col < 4; ++col) {
     int curr = 0;
     for (int row = 0; row < 4; ++row) {
       if (grid[row][col] != 0) {
         grid[curr][col] = grid[row][col];
-        if (curr != row)
+        if (curr != row) {
           grid[row][col] = 0;
+        }
         ++curr;
       }
     }
@@ -74,17 +87,23 @@ void up(int grid[4][4]) {
     }
   }
 
-  genTile(grid);
+  if (compareGrid(prevGrid, grid)) {
+    genTile(grid);
+  }
 };
 
 void right(int grid[4][4]) {
+  int prevGrid[4][4];
+  copyGrid(grid, prevGrid);
+
   for (int row = 0; row < 4; ++row) {
     int curr = 3;
     for (int col = 3; col >= 0; --col) {
       if (grid[row][col] != 0) {
         grid[row][curr] = grid[row][col];
-        if (curr != col)
+        if (curr != col) {
           grid[row][col] = 0;
+        }
         --curr;
       }
     }
@@ -112,17 +131,23 @@ void right(int grid[4][4]) {
     }
   }
 
-  genTile(grid);
+  if (compareGrid(prevGrid, grid)) {
+    genTile(grid);
+  }
 }
 
 void left(int grid[4][4]) {
+  int prevGrid[4][4];
+  copyGrid(grid, prevGrid);
+
   for (int row = 0; row < 4; ++row) {
     int curr = 0;
     for (int col = 0; col < 4; ++col) {
       if (grid[row][col] != 0) {
         grid[row][curr] = grid[row][col];
-        if (curr != col)
+        if (curr != col) {
           grid[row][col] = 0;
+        }
         ++curr;
       }
     }
@@ -150,7 +175,9 @@ void left(int grid[4][4]) {
     }
   }
 
-  genTile(grid);
+  if (compareGrid(prevGrid, grid)) {
+    genTile(grid);
+  }
 };
 
 void genTile(int grid[4][4]) {
