@@ -50,9 +50,5 @@ void copyGrid(int original[4][4], int newArr[4][4]) {
 
 int compareGrid(int a[4][4], int b[4][4]) {
   int result = memcmp(a, b, 4 * 4 * sizeof(int));
-  if (result != 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return result != 0 ? 1 : 0;
 }
