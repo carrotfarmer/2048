@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <stdio.h>
 
 #include "game.h"
 #include "utils.h"
@@ -131,7 +130,7 @@ void right(int grid[4][4]) {
     }
   }
 
-  if (compareGrid(prevGrid, grid) == 1) {
+  if (compareGrid(prevGrid, grid) == 1 && emptySlotCount(grid) > 0) {
     genTile(grid);
   }
 }
@@ -175,15 +174,36 @@ void left(int grid[4][4]) {
     }
   }
 
-  if (compareGrid(prevGrid, grid) == 1) {
+  if (compareGrid(prevGrid, grid) == 1 && emptySlotCount(grid) > 0) {
     genTile(grid);
   }
 };
 
+bool isGameOver(int grid[4][4]) {
+  if (emptySlotCount(grid) > 0) {
+    return false;
+  }
+
+  int newGrid[4][4];
+  copyGrid(grid, newGrid);
+
+  down(newGrid);
+  up(newGrid);
+  right(newGrid);
+  left(newGrid);
+
+  return compareGrid(grid, newGrid) == 0 ? true : false;
+}
+
 void genTile(int grid[4][4]) {
   int emptySlots = emptySlotCount(grid);
+  if (emptySlots == 0) {
+    return;
+  }
   Point emptySlotsArr[emptySlots];
   fillEmptySlots(emptySlotsArr, grid);
-  Point newPoint = emptySlotsArr[genRandom(4)];
+
+  Point newPoint =
+      emptySlotsArr[genRandom(sizeof(emptySlotsArr) / sizeof(Point))];
   grid[newPoint.y][newPoint.x] = 2;
 }

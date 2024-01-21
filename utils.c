@@ -23,6 +23,10 @@ int emptySlotCount(int arr[4][4]) {
 }
 
 void fillEmptySlots(Point slots[], int arr[4][4]) {
+  if (emptySlotCount(arr) == 0) {
+    return;
+  }
+
   int slotIndex = 0;
   for (int i = 0; i < 4; ++i) {
     for (int j = 0; j < 4; ++j) {

@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -45,7 +46,12 @@ void renderGrid(int grid[4][4]) {
 }
 
 int main(void) {
-  int arr[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+  int arr[4][4] = {
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+  };
 
   int tileSpotX = genRandom(4);
   int tileSpotY = genRandom(4);
@@ -57,16 +63,25 @@ int main(void) {
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
-    if (IsKeyPressed(KEY_DOWN))
-      down(arr);
-    if (IsKeyPressed(KEY_UP))
-      up(arr);
-    if (IsKeyPressed(KEY_LEFT))
-      left(arr);
-    if (IsKeyPressed(KEY_RIGHT))
-      right(arr);
-
-    BeginDrawing();
+    if (IsKeyPressed(KEY_DOWN)) {
+      if (!isGameOver(arr))
+        down(arr);
+    }
+    if (IsKeyPressed(KEY_UP)) {
+      if (!isGameOver(arr))
+        up(arr);
+    }
+    if (IsKeyPressed(KEY_RIGHT)) {
+      if (!isGameOver(arr))
+        right(arr);
+    }
+    if (IsKeyPressed(KEY_LEFT)) {
+      if (!isGameOver(arr)) {
+        left(arr);
+      } else {
+        printf("game over");
+      }
+    }
 
     ClearBackground(RAYWHITE);
 
