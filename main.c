@@ -32,6 +32,10 @@ const Color SMALL_TEXT_COLOR = {119, 110, 101, 1};
 // tiles >= 8
 const Color BIG_TEXT_COLOR = {249, 246, 242, 1};
 
+void gameOver(Font font) {
+  DrawTextEx(font, "Game Over", (Vector2){100, 10}, 100, 0, RED);
+}
+
 void drawTile(int x, int y, Color color) {
   // it is what it is 💀
   if (y == BOX_HEIGHT + BORDER_WIDTH) {
@@ -174,24 +178,21 @@ int main(void) {
                              MAX_FONT_CHARS);
 
   while (!WindowShouldClose()) {
-    if (IsKeyPressed(KEY_DOWN)) {
-      if (!isGameOver(arr))
+    if (!isGameOver(arr)) {
+      if (IsKeyPressed(KEY_DOWN)) {
         down(arr);
-    }
-    if (IsKeyPressed(KEY_UP)) {
-      if (!isGameOver(arr))
-        up(arr);
-    }
-    if (IsKeyPressed(KEY_RIGHT)) {
-      if (!isGameOver(arr))
-        right(arr);
-    }
-    if (IsKeyPressed(KEY_LEFT)) {
-      if (!isGameOver(arr)) {
-        left(arr);
-      } else {
-        printf("game over");
       }
+      if (IsKeyPressed(KEY_UP)) {
+        up(arr);
+      }
+      if (IsKeyPressed(KEY_RIGHT)) {
+        right(arr);
+      }
+      if (IsKeyPressed(KEY_LEFT)) {
+        left(arr);
+      }
+    } else {
+      gameOver(openSans);
     }
 
     ClearBackground((Color){250, 248, 239, 1});
