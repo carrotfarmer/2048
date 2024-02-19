@@ -21,16 +21,39 @@
 #define TRIPLE_DIGIT 50
 #define QUAD_DIGIT 45
 
+#define SCORE_BOX_X 500
+
 const int BOX_WIDTH = (SCREEN_WIDTH / 6) - BORDER_WIDTH;
 const int BOX_HEIGHT = (SCREEN_HEIGHT / 6) - BORDER_WIDTH;
 
 const Color BORDER_COLOR = {187, 173, 160, 255};
 
 // tiles < 8
-const Color SMALL_TEXT_COLOR = {119, 110, 101, 1};
+const Color SMALL_TEXT_COLOR = (Color){119, 110, 101, 255};
 
-// tiles >= 8
-const Color BIG_TEXT_COLOR = {249, 246, 242, 1};
+// tiles > 8
+const Color BIG_TEXT_COLOR = (Color){249, 246, 242, 255};
+
+void drawScore(int score, Font font) {
+  char txt[32];
+  snprintf(txt, 32, "%d", score);
+
+  int boxWidth = 80 + (10 * numDigits(score));
+
+  DrawRectangle(SCORE_BOX_X, (BOX_WIDTH / 4), boxWidth, 50,
+                (Color){187, 173, 160, 255});
+
+  // text x position
+  int textXPos = SCORE_BOX_X + (boxWidth / 2) - 25;
+
+  DrawTextEx(font, "SCORE", (Vector2){textXPos, (BOX_WIDTH / 3.5)}, 15, 0,
+             (Color){237, 227, 218, 255});
+
+  // score x position, centered - offset
+  int scoreXPos = SCORE_BOX_X + (boxWidth / 2) - numDigits(score) * 10;
+  DrawTextEx(font, txt, (Vector2){scoreXPos, (BOX_WIDTH / 2.5)}, 35, 0,
+             (Color){255, 255, 255, 255});
+}
 
 void gameOver(Font font) {
   DrawTextEx(font, "Game Over", (Vector2){100, 10}, 100, 0, RED);
@@ -111,16 +134,19 @@ void drawText(int tileVal, int currX, int currY, Font font) {
   if (strcmp(txt, "0")) {
     if (tileVal > 1000) {
       DrawTextEx(font, txt, (Vector2){textCoords.x - 34, textCoords.y - 26},
-                 QUAD_DIGIT, 0, WHITE);
+                 QUAD_DIGIT, 0, BIG_TEXT_COLOR);
     } else if (tileVal > 100) {
       DrawTextEx(font, txt, (Vector2){textCoords.x - 25, textCoords.y - 28},
-                 TRIPLE_DIGIT, 0, WHITE);
+                 TRIPLE_DIGIT, 0, BIG_TEXT_COLOR);
     } else if (tileVal > 10) {
       DrawTextEx(font, txt, (Vector2){textCoords.x - 16, textCoords.y - 35},
-                 DOUBLE_DIGIT, 0, WHITE);
+                 DOUBLE_DIGIT, 0, BIG_TEXT_COLOR);
+    } else if (tileVal >= 8) {
+      DrawTextEx(font, txt, (Vector2){textCoords.x - 8, textCoords.y - 35},
+                 SINGLE_DIGIT, 0, BIG_TEXT_COLOR);
     } else {
       DrawTextEx(font, txt, (Vector2){textCoords.x - 8, textCoords.y - 35},
-                 SINGLE_DIGIT, 0, GRAY);
+                 SINGLE_DIGIT, 0, SMALL_TEXT_COLOR);
     }
   }
 }
@@ -159,11 +185,12 @@ void renderGrid(int grid[4][4], Font font) {
 
 int main(void) {
   int arr[4][4] = {
-      {16, 32, 64, 128},
-      {4, 4, 4, 4},
-      {8, 8, 8, 8},
-      {128, 256, 512, 1024},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
   };
+  int score = 0;
 
   int tileSpotX = genRandom(4);
   int tileSpotY = genRandom(4);
@@ -178,18 +205,18 @@ int main(void) {
                              MAX_FONT_CHARS);
 
   while (!WindowShouldClose()) {
-    if (!isGameOver(arr)) {
+    if (!isGameOver(arr, &score)) {
       if (IsKeyPressed(KEY_DOWN)) {
-        down(arr);
+        down(arr, &score);
       }
       if (IsKeyPressed(KEY_UP)) {
-        up(arr);
+        up(arr, &score);
       }
       if (IsKeyPressed(KEY_RIGHT)) {
-        right(arr);
+        right(arr, &score);
       }
       if (IsKeyPressed(KEY_LEFT)) {
-        left(arr);
+        left(arr, &score);
       }
     } else {
       gameOver(openSans);
@@ -197,6 +224,7 @@ int main(void) {
 
     ClearBackground((Color){250, 248, 239, 1});
 
+    drawScore(score, openSans);
     renderGrid(arr, openSans);
 
     EndDrawing();

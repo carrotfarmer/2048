@@ -3,7 +3,7 @@
 #include "game.h"
 #include "utils.h"
 
-void down(int grid[4][4]) {
+void down(int grid[4][4], int *score) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -24,6 +24,7 @@ void down(int grid[4][4]) {
     for (int row = 3; row > 0; --row) {
       if (grid[row][col] == grid[row - 1][col]) {
         grid[row][col] *= 2;
+        *score += grid[row][col];
         grid[row - 1][col] = 0;
       }
     }
@@ -47,7 +48,7 @@ void down(int grid[4][4]) {
   }
 }
 
-void up(int grid[4][4]) {
+void up(int grid[4][4], int *score) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -68,6 +69,7 @@ void up(int grid[4][4]) {
     for (int row = 0; row < 3; ++row) {
       if (grid[row][col] == grid[row + 1][col]) {
         grid[row][col] *= 2;
+        *score += grid[row][col];
         grid[row + 1][col] = 0;
       }
     }
@@ -91,7 +93,7 @@ void up(int grid[4][4]) {
   }
 };
 
-void right(int grid[4][4]) {
+void right(int grid[4][4], int *score) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -112,6 +114,7 @@ void right(int grid[4][4]) {
     for (int col = 3; col > 0; --col) {
       if (grid[row][col] == grid[row][col - 1]) {
         grid[row][col] *= 2;
+        *score += grid[row][col];
         grid[row][col - 1] = 0;
       }
     }
@@ -135,7 +138,7 @@ void right(int grid[4][4]) {
   }
 }
 
-void left(int grid[4][4]) {
+void left(int grid[4][4], int *score) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -156,6 +159,7 @@ void left(int grid[4][4]) {
     for (int col = 0; col < 3; ++col) {
       if (grid[row][col] == grid[row][col + 1]) {
         grid[row][col] *= 2;
+        *score += grid[row][col];
         grid[row][col + 1] = 0;
       }
     }
@@ -179,7 +183,7 @@ void left(int grid[4][4]) {
   }
 };
 
-bool isGameOver(int grid[4][4]) {
+bool isGameOver(int grid[4][4], int *score) {
   if (emptySlotCount(grid) > 0) {
     return false;
   }
@@ -187,10 +191,10 @@ bool isGameOver(int grid[4][4]) {
   int newGrid[4][4];
   copyGrid(grid, newGrid);
 
-  down(newGrid);
-  up(newGrid);
-  right(newGrid);
-  left(newGrid);
+  down(newGrid, score);
+  up(newGrid, score);
+  right(newGrid, score);
+  left(newGrid, score);
 
   return compareGrid(grid, newGrid) == 0 ? true : false;
 }

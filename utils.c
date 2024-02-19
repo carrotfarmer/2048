@@ -56,3 +56,19 @@ int compareGrid(int a[4][4], int b[4][4]) {
   int result = memcmp(a, b, 4 * 4 * sizeof(int));
   return result != 0 ? 1 : 0;
 }
+
+int numDigits(int n) {
+  if (n < 10)
+    return 1;
+  if (n < 100)
+    return 2;
+  if (n < 1000)
+    return 3;
+  if (n < 10000)
+    return 4;
+  if (n < 100000)
+    return 5;
+  if (n < 1000000)
+    return 6;
+  return 7;
+}
