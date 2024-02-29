@@ -55,8 +55,28 @@ void drawScore(int score, Font font) {
              (Color){255, 255, 255, 255});
 }
 
-void gameOver(Font font) {
-  DrawTextEx(font, "Game Over", (Vector2){100, 10}, 100, 0, RED);
+void resetGrid(int grid[4][4]) {
+  for (int i = 0; i < 4; ++i) {
+    for (int j = 0; j < 4; ++j) {
+      grid[i][j] = 0;
+    }
+  }
+
+  int tileSpotX = genRandom(4);
+  int tileSpotY = genRandom(4);
+
+  grid[tileSpotX][tileSpotY] = 2;
+}
+
+void gameOver(Font font, int grid[4][4], int *score) {
+  DrawTextEx(font, "Game Over! Press Enter/Return to Restart",
+             (Vector2){BOX_WIDTH, (BOX_HEIGHT / 1.5)}, 25, 0,
+             (Color){119, 110, 101, 255});
+
+  if (IsKeyPressed(KEY_ENTER)) {
+    *score = 0;
+    resetGrid(grid);
+  }
 }
 
 void drawTile(int x, int y, Color color) {
@@ -207,19 +227,19 @@ int main(void) {
   while (!WindowShouldClose()) {
     if (!isGameOver(arr, &score)) {
       if (IsKeyPressed(KEY_DOWN)) {
-        down(arr, &score);
+        down(arr, &score, 1);
       }
       if (IsKeyPressed(KEY_UP)) {
-        up(arr, &score);
+        up(arr, &score, 1);
       }
       if (IsKeyPressed(KEY_RIGHT)) {
-        right(arr, &score);
+        right(arr, &score, 1);
       }
       if (IsKeyPressed(KEY_LEFT)) {
-        left(arr, &score);
+        left(arr, &score, 1);
       }
     } else {
-      gameOver(openSans);
+      gameOver(openSans, arr, &score);
     }
 
     ClearBackground((Color){250, 248, 239, 1});

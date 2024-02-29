@@ -3,7 +3,7 @@
 #include "game.h"
 #include "utils.h"
 
-void down(int grid[4][4], int *score) {
+void down(int grid[4][4], int *score, int shouldScoreUpdate) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -24,7 +24,8 @@ void down(int grid[4][4], int *score) {
     for (int row = 3; row > 0; --row) {
       if (grid[row][col] == grid[row - 1][col]) {
         grid[row][col] *= 2;
-        *score += grid[row][col];
+        if (shouldScoreUpdate)
+          *score += grid[row][col];
         grid[row - 1][col] = 0;
       }
     }
@@ -48,7 +49,7 @@ void down(int grid[4][4], int *score) {
   }
 }
 
-void up(int grid[4][4], int *score) {
+void up(int grid[4][4], int *score, int shouldScoreUpdate) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -69,7 +70,8 @@ void up(int grid[4][4], int *score) {
     for (int row = 0; row < 3; ++row) {
       if (grid[row][col] == grid[row + 1][col]) {
         grid[row][col] *= 2;
-        *score += grid[row][col];
+        if (shouldScoreUpdate)
+          *score += grid[row][col];
         grid[row + 1][col] = 0;
       }
     }
@@ -93,7 +95,7 @@ void up(int grid[4][4], int *score) {
   }
 };
 
-void right(int grid[4][4], int *score) {
+void right(int grid[4][4], int *score, int shouldScoreUpdate) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -114,7 +116,8 @@ void right(int grid[4][4], int *score) {
     for (int col = 3; col > 0; --col) {
       if (grid[row][col] == grid[row][col - 1]) {
         grid[row][col] *= 2;
-        *score += grid[row][col];
+        if (shouldScoreUpdate)
+          *score += grid[row][col];
         grid[row][col - 1] = 0;
       }
     }
@@ -138,7 +141,7 @@ void right(int grid[4][4], int *score) {
   }
 }
 
-void left(int grid[4][4], int *score) {
+void left(int grid[4][4], int *score, int shouldScoreUpdate) {
   int prevGrid[4][4];
   copyGrid(grid, prevGrid);
 
@@ -159,7 +162,8 @@ void left(int grid[4][4], int *score) {
     for (int col = 0; col < 3; ++col) {
       if (grid[row][col] == grid[row][col + 1]) {
         grid[row][col] *= 2;
-        *score += grid[row][col];
+        if (shouldScoreUpdate)
+          *score += grid[row][col];
         grid[row][col + 1] = 0;
       }
     }
@@ -191,10 +195,10 @@ bool isGameOver(int grid[4][4], int *score) {
   int newGrid[4][4];
   copyGrid(grid, newGrid);
 
-  down(newGrid, score);
-  up(newGrid, score);
-  right(newGrid, score);
-  left(newGrid, score);
+  down(newGrid, score, 0);
+  up(newGrid, score, 0);
+  right(newGrid, score, 0);
+  left(newGrid, score, 0);
 
   return compareGrid(grid, newGrid) == 0 ? true : false;
 }
