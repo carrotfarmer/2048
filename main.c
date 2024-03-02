@@ -34,23 +34,22 @@ const Color SMALL_TEXT_COLOR = (Color){119, 110, 101, 255};
 // tiles > 8
 const Color BIG_TEXT_COLOR = (Color){249, 246, 242, 255};
 
-void drawScore(int score, Font font) {
+void drawScore(int score, Font font, char *text, int x) {
   char txt[32];
   snprintf(txt, 32, "%d", score);
 
   int boxWidth = 80 + (10 * numDigits(score));
 
-  DrawRectangle(SCORE_BOX_X, (BOX_WIDTH / 4), boxWidth, 50,
-                (Color){187, 173, 160, 255});
+  DrawRectangle(x, BOX_WIDTH / 4, boxWidth, 50, (Color){187, 173, 160, 255});
 
   // text x position
-  int textXPos = SCORE_BOX_X + (boxWidth / 2) - 25;
+  int textXPos = x + (boxWidth / 2) - 25;
 
-  DrawTextEx(font, "SCORE", (Vector2){textXPos, (BOX_WIDTH / 3.5)}, 15, 0,
+  DrawTextEx(font, text, (Vector2){textXPos, (BOX_WIDTH / 3.5)}, 15, 0,
              (Color){237, 227, 218, 255});
 
   // score x position, centered - offset
-  int scoreXPos = SCORE_BOX_X + (boxWidth / 2) - numDigits(score) * 10;
+  int scoreXPos = x + (boxWidth / 2) - numDigits(score) * 10;
   DrawTextEx(font, txt, (Vector2){scoreXPos, (BOX_WIDTH / 2.5)}, 35, 0,
              (Color){255, 255, 255, 255});
 }
@@ -129,12 +128,6 @@ Color getTileColor(int tileVal) {
   case 2048:
     return (Color){237, 194, 46, 255};
     break;
-  case 4096:
-    return (Color){237, 194, 46, 255};
-    break;
-  case 8192:
-    return (Color){237, 194, 46, 255};
-    break;
   default:
     return (Color){237, 194, 46, 255};
     break;
@@ -203,7 +196,15 @@ void renderGrid(int grid[4][4], Font font) {
   }
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
+  int enableHighScore = 1;
+
+  if (argc > 1) {
+    if (strcmp(argv[1], "--disable-high-score") == 0) {
+      enableHighScore = 0;
+    }
+  }
+
   int arr[4][4] = {
       {0, 0, 0, 0},
       {0, 0, 0, 0},
@@ -228,6 +229,7 @@ int main(void) {
     if (!isGameOver(arr, &score)) {
       if (IsKeyPressed(KEY_DOWN)) {
         down(arr, &score, 1);
+        printf("%d", decryptHighScore());
       }
       if (IsKeyPressed(KEY_UP)) {
         up(arr, &score, 1);
@@ -238,13 +240,28 @@ int main(void) {
       if (IsKeyPressed(KEY_LEFT)) {
         left(arr, &score, 1);
       }
+
+      if (enableHighScore && score > decryptHighScore()) {
+        saveEncryptedScore(score);
+      }
     } else {
       gameOver(openSans, arr, &score);
     }
 
     ClearBackground((Color){250, 248, 239, 1});
 
-    drawScore(score, openSans);
+    // x: SCORE_BOX_X
+    // y: BOX_WIDTH / 4
+    // textX: SCORE_BOX_X + (boxWidth / 2) - 25;
+    // textY: BOX_WIDTH / 3.5
+    // scoreTextX: SCORE_BOX_X + (boxWidth / 2) - numDigits(score) * 10;
+    // y: BOX_WIDTH / 2.5
+
+    drawScore(score, openSans, "SCORE", SCORE_BOX_X);
+
+    if (enableHighScore)
+      drawScore(decryptHighScore(), openSans, "HIGH SCORE", SCORE_BOX_X - 150);
+
     renderGrid(arr, openSans);
 
     EndDrawing();

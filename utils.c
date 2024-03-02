@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -71,4 +72,41 @@ int numDigits(int n) {
   if (n < 1000000)
     return 6;
   return 7;
+}
+
+void saveEncryptedScore(int score) {
+  char *encryptionCmd = malloc(256);
+  sprintf(encryptionCmd,
+          "echo \"%d\" | openssl enc -e -aes-256-cbc -pass pass:foobar -out "
+          "highscore.txt",
+          score);
+  system(encryptionCmd);
+}
+
+int decryptHighScore() {
+  char *decrypted = malloc(256);
+
+  FILE *fp = popen(
+      "openssl enc -d -aes-256-cbc -pass pass:foobar -in highscore.txt", "r");
+
+  if (fp == NULL) {
+    perror("Failed to decrypt high score");
+    return -1;
+  }
+
+  // Read the output into the decrypted buffer
+  if (fgets(decrypted, sizeof(decrypted), fp) == NULL) {
+    perror("Failed to read high score decryption output");
+    return -1;
+  }
+
+  // Close the pipe
+  pclose(fp);
+
+  // Print the decrypted string
+  printf("Decrypted high score: %s\n", decrypted);
+
+  int decryptedInt = atoi(decrypted);
+
+  return decryptedInt;
 }
