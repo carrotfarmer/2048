@@ -249,15 +249,6 @@ int main(int argc, char *argv[]) {
 
     ClearBackground((Color){250, 248, 239, 1});
 
-    // x: SCORE_BOX_X
-    // y: BOX_WIDTH / 4
-    // textX: SCORE_BOX_X + (boxWidth / 2) - 25;
-    // textY: BOX_WIDTH / 3.5
-    // scoreTextX: SCORE_BOX_X + (boxWidth / 2) - numDigits(score) * 10;
-    // y: BOX_WIDTH / 2.5
-
-    drawScore(score, openSans, "SCORE", SCORE_BOX_X);
-
     if (enableHighScore)
       drawScore(decryptHighScore(), openSans, "HIGH SCORE", SCORE_BOX_X - 150);
 
