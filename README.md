@@ -17,7 +17,7 @@ If you do not have `openssl` (Mac and Linux should have this pre-installed), run
 ./2048 --disable-high-score
 ```
 
-```
+```fish
 # clone repo
 git clone https://github.com/carrotfarmer/2048 2048
 cd 2048
