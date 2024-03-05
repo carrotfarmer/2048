@@ -69,7 +69,7 @@ void resetGrid(int grid[4][4]) {
 
 void gameOver(Font font, int grid[4][4], int *score) {
   DrawTextEx(font, "Game Over! Press Enter/Return to Restart",
-             (Vector2){BOX_WIDTH, (BOX_HEIGHT / 1.5)}, 25, 0,
+             (Vector2){BOX_WIDTH, (BOX_HEIGHT / 1.55)}, 25, 0,
              (Color){119, 110, 101, 255});
 
   if (IsKeyPressed(KEY_ENTER)) {
@@ -198,7 +198,6 @@ void renderGrid(int grid[4][4], Font font) {
 
 int main(int argc, char *argv[]) {
   int enableHighScore = 1;
-
   if (argc > 1) {
     if (strcmp(argv[1], "--disable-high-score") == 0) {
       enableHighScore = 0;
